@@ -17,7 +17,7 @@ while True:
         break
     elif user_input == '1':
         while True:
-            print('*** Check balance portal ***')
+            print('*** Check balance amount portal ***')
             user_input_cust_id = input('Enter your CUSTOMER ID: ')
             # Basic customer id validation
             val_return = Rbov_class.cust_id_val(user_input_cust_id)
