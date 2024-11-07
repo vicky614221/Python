@@ -1,4 +1,7 @@
+from random import randint
+
 import mysql.connector
+import random
 
 from Py.check_sql import my_cursor, value, query_result
 
@@ -22,6 +25,8 @@ class Rbov_class:
                     return True
         else:
             print('Error in connecting DB')
+        my_cursor.close()
+        mydb.close()
 
     def get_all_accounts(self,cust_id):
         mydb = mysql.connector.connect(host='localhost',user='root',passwd='vicky',database='rbov',auth_plugin='mysql_native_password')
@@ -29,6 +34,8 @@ class Rbov_class:
         value = (cust_id,)
         my_cursor_get_bal.execute("select * from customer_acct where cust_id = %s",value)
         query_result = my_cursor_get_bal.fetchall()
+        my_cursor.close()
+        mydb.close()
         while True:
             if len(query_result) > 0:
                 i=0
@@ -58,6 +65,34 @@ class Rbov_class:
             else:
                 print('No accounts found')
                 break
+    def add_customer(self,cust_id, cust_fname, cust_lname, cust_email):
+        self.cust_id = cust_id
+        self.cust_fname = cust_fname
+        self.cust_lname = cust_lname
+        self.cust_email = cust_email
+
+        mydb = mysql.connector.connect(host='localhost',user='root',passwd='vicky',database='rbov',auth_plugin='mysql_native_password')
+        my_cursor = mydb.cursor()
+        value=(self.cust_id.lower(),self.cust_fname.upper(),self.cust_lname.upper(),self.cust_email.lower())
+        my_cursor.execute("insert into  customer_det values (%s,%s,%s,%s)",value)
+        mydb.commit()
+        my_cursor.close()
+        mydb.close()
+
+    def add_account(self,cust_id,acct_prod):
+        self.cust_id = cust_id
+        self.acct_prod = acct_prod
+
+        mydb = mysql.connector.connect(host='localhost',user='root',passwd='vicky',database='rbov',auth_plugin='mysql_native_password')
+        my_cursor = mydb.cursor()
+        acct_no = 'RBOVPER' + str(randint(10000,99999))
+        value=(self.cust_id,self.acct_prod,'0001',acct_no,0)
+        print(value)
+        my_cursor.execute("insert into customer_acct values (%s,%s,%s,%s,%s)", value)
+        mydb.commit()
+        my_cursor.close()
+        mydb.close()
+
     @staticmethod
     def cust_id_val(user_input_cust_id):
         if len(user_input_cust_id) == 0 or len(user_input_cust_id) > 32:
