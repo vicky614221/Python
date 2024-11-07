@@ -9,5 +9,6 @@ modify cust_lname varchar(50) not null default '',
 modify cust_email varchar(80) not null default '';
 
 insert into customer_det values('vicky001','VIGNESH','SOMU','vicky123@gmail.com');
+insert into customer_det values('jimmy001','JIMMY','RASH','jimmyrash@gmail.com');
 
 select * from customer_det;

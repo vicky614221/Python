@@ -26,12 +26,17 @@ while True:
                 break
             else:
                 # instantiate this user id
-                user_input_cust_id = Rbov_class()
+                user_input_cust_id_obj = Rbov_class(user_input_cust_id)
 
             # check if this customer id is present in the customer_det table
-            if user_input_cust_id.is_present():
-                print(f'Hello {user_input_cust_id} !!!')
-            break
+            if user_input_cust_id_obj.is_present():
+                print(f'Hello Mr. {user_input_cust_id_obj.cust_lname} !!!, Below are your accounts')
+                user_input_cust_id_obj.get_all_accounts(user_input_cust_id)
+
+                break
+            else:
+                print('customer ID not found')
+                break
     elif user_input == '2':
         print('*** Deposit money portal ***')
         user_input_cust_id = input('Enter your CUSTOMER ID: ')
