@@ -1,4 +1,4 @@
-from rbov import rbov_class
+from Rbov import Rbov_class
 
 
 
@@ -19,13 +19,13 @@ while True:
             print('*** Check balance portal ***')
             user_input_cust_id = input('Enter your CUSTOMER ID: ')
             # Basic customer id validation
-            val_return = rbov_class.cust_id_val(user_input_cust_id)
+            val_return = Rbov_class.cust_id_val(user_input_cust_id)
             if val_return == -1:
                 print("Invalid customer id")
                 break
             else:
                 # Check RBOV customer list file for this customer id
-                user_input_cust_id_obj = rbov_class(user_input_cust_id)
+                user_input_cust_id_obj = Rbov_class(user_input_cust_id)
                 bal=user_input_cust_id_obj.get_cust_bal()
                 if bal == '*':
                     print('No data found')
@@ -37,7 +37,7 @@ while True:
         print('*** Deposit money portal ***')
         user_input_cust_id = input('Enter your CUSTOMER ID: ')
         # Basic customer id validation
-        val_return = cust_id_val(user_input_cust_id)
+        val_return = Rbov_class.cust_id_val(user_input_cust_id)
         if val_return == -1:
             print("Invalid customer id")
             break
@@ -48,7 +48,7 @@ while True:
         print('*** Withdraw money portal ***')
         user_input_cust_id = input('Enter your CUSTOMER ID: ')
         # Basic customer id validation
-        val_return = cust_id_val(user_input_cust_id)
+        val_return = Rbov_class.cust_id_val(user_input_cust_id)
         if val_return == -1:
             print("Invalid customer id")
             break

@@ -1,4 +1,4 @@
-class rbov_class:
+class Rbov_class:
     def __init__(self,cust_id):
         self.cust_id = cust_id
         self.cust_bal = None
@@ -8,6 +8,7 @@ class rbov_class:
         for each_line in fhand_cust_file:
             each_line = each_line.strip()
             each_line_word = each_line.split()
+        #    print(each_line_word)
             if len(each_line_word) == 3:
                 if each_line_word[0] == self.cust_id:
     #                self.cust_id = each_line_word[0]
@@ -15,15 +16,15 @@ class rbov_class:
                     self.cust_name = each_line_word[2]
                     break
             else:
-                print('Incorrect file data, check file')
-                break
+            #    print('Incorrect file data, check file')
+                continue
     def get_cust_bal(self):
-        if self.cust_bal == None:
+        if self.cust_bal is None:
             return '*'
         else:
             return self.cust_bal
     def get_cust_name(self):
-        if self.cust_name == None:
+        if self.cust_name is None:
             return '*'
         else:
             return self.cust_name
