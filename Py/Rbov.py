@@ -1,23 +1,24 @@
+import mysql.connector
+
+
 class Rbov_class:
-    def __init__(self,cust_id):
-        self.cust_id = cust_id
+    def __init__(self):
+        self.cust_id = self
         self.cust_bal = None
         self.cust_name = None
-        file_cust_det = dict()
-        fhand_cust_file = open('RBOV_customer_id_list.txt')
-        for each_line in fhand_cust_file:
-            each_line = each_line.strip()
-            each_line_word = each_line.split()
-        #    print(each_line_word)
-            if len(each_line_word) == 3:
-                if each_line_word[0] == self.cust_id:
-    #                self.cust_id = each_line_word[0]
-                    self.cust_bal = each_line_word[1]
-                    self.cust_name = each_line_word[2]
-                    break
-            else:
-            #    print('Incorrect file data, check file')
-                continue
+
+    def is_present(self):
+        mydb = mysql.connector.connect(host="localhost",user="root",passwd="vicky",database="rbov")
+        if mydb.is_connected():
+            print('Connected to database ' + mysql.connector.database)
+        my_cursor = mydb.cursor()
+        my_cursor.execute("select cust_id from customer_det where cust_id = '%s'", self)
+
+        query_result = my_cursor.fetchone()
+        if query_result == self:
+            return True
+        else:
+            return False
     def get_cust_bal(self):
         if self.cust_bal is None:
             return '*'
@@ -31,5 +32,5 @@ class Rbov_class:
 
     @staticmethod
     def cust_id_val(user_input_cust_id):
-        if len(user_input_cust_id) != 8:
+        if len(user_input_cust_id) == 0 or len(user_input_cust_id) > 32:
             return -1

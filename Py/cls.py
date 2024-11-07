@@ -1,4 +1,5 @@
 from Rbov import Rbov_class
+import mysql.connector
 
 
 
@@ -21,18 +22,16 @@ while True:
             # Basic customer id validation
             val_return = Rbov_class.cust_id_val(user_input_cust_id)
             if val_return == -1:
-                print("Invalid customer id")
+                print("invalid customer ID length")
                 break
             else:
-                # Check RBOV customer list file for this customer id
-                user_input_cust_id_obj = Rbov_class(user_input_cust_id)
-                bal=user_input_cust_id_obj.get_cust_bal()
-                if bal == '*':
-                    print('No data found')
-                    break
-                name = user_input_cust_id_obj.get_cust_name()
-                print(f'Hello {name}, your ID {user_input_cust_id} has balance of ${bal}')
-                break
+                # instantiate this user id
+                user_input_cust_id = Rbov_class()
+
+            # check if this customer id is present in the customer_det table
+            if user_input_cust_id.is_present():
+                print(f'Hello {user_input_cust_id} !!!')
+            break
     elif user_input == '2':
         print('*** Deposit money portal ***')
         user_input_cust_id = input('Enter your CUSTOMER ID: ')
