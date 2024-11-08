@@ -1,8 +1,5 @@
 from Rbov import Rbov_class
 import mysql.connector
-
-
-
 while True:
     print('*** Welcome to Royal Bank of Vellore ***')
     print('1: Check Balance')
@@ -82,7 +79,7 @@ while True:
                             print(f'Hello Mr. {user_input_lname[0].upper()}{user_input_lname[1:len(user_input_lname)].lower()} !!!, Thanks for joining')
 
                             while True:
-                                user_wish_to_op_acct = input('Would you like to open an account with us? (Y-yes/N-No)')
+                                user_wish_to_op_acct = input('Would you like to open an account with us? (Y-yes/N-No): ')
                                 if user_wish_to_op_acct == ('n' or 'N'):
                                     print('We would request you to open an account within 7 days if not opened already after which the customer ID will be removed')
                                     break
@@ -91,12 +88,14 @@ while True:
                                     print('1) Savings account')
                                     print('2) Credit card account')
                                     print('3) Debit card account')
-                                    user_accnt_sel = input("Select any one")
+                                    user_accnt_sel = input("Select your option: ")
                                     if user_accnt_sel == '1':
                                         user_input_cust_id_obj.add_account(user_input_cust_id,'PER')
-                                    if user_accnt_sel == ('2' or '3'):
+                                    elif user_accnt_sel == ('2' or '3'):
                                         print('feature under maintenance')
                                         break
+                                    else:
+                                        print("Invalid option selected, try again")
 
                                 else:
                                     print('Invalid option selected')

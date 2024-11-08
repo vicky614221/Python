@@ -2,10 +2,6 @@ from random import randint
 
 import mysql.connector
 import random
-
-from Py.check_sql import my_cursor, value, query_result
-
-
 class Rbov_class:
     def __init__(self,user_input_cust_id):
         self.cust_id = user_input_cust_id
@@ -25,7 +21,7 @@ class Rbov_class:
                     return True
         else:
             print('Error in connecting DB')
-        my_cursor.close()
+        my_cursor_cust_det.close()
         mydb.close()
 
     def get_all_accounts(self,cust_id):
@@ -34,7 +30,7 @@ class Rbov_class:
         value = (cust_id,)
         my_cursor_get_bal.execute("select * from customer_acct where cust_id = %s",value)
         query_result = my_cursor_get_bal.fetchall()
-        my_cursor.close()
+        my_cursor_get_bal.close()
         mydb.close()
         while True:
             if len(query_result) > 0:
