@@ -8,16 +8,20 @@ class Solution:
         for each_dig in range(0,len(int_str)):
             int_str_list.append(int_str[each_dig])
         #print(int_str_list)
-        int_str_rev = list()
-        for each_digit_ind in range(len(int_str)-1,-1,-1):
-            int_str_rev.append(int_str[each_digit_ind])
+        #int_str_rev = list()
+        #for each_digit_ind in range(len(int_str)-1,-1,-1):
+        #    int_str_rev.append(int_str[each_digit_ind])
         #print(int_str_rev)
+        ori = int_str_list.copy()
 
-        if int_str_list == int_str_rev:
+        #print(ori)
+        int_str_list.reverse()
+        #print(int_str_list)
+        if ori == int_str_list:
             return True
         else:
             return False
 
 
 obj = Solution()
-obj.isPalindrome(98989)
+obj.isPalindrome(121)
