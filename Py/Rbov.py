@@ -3,24 +3,28 @@ from random import randint
 import mysql.connector
 import random
 class Rbov_class:
-    def __init__(self,user_input_cust_id):
+    def __init__(self,user_input_cust_id,pass_word):
         self.cust_id = user_input_cust_id
+        self.cust_pwd = pass_word
 
     def is_present(self):
         mydb = mysql.connector.connect(host="localhost",user="root",passwd="vicky",database="rbov",auth_plugin='mysql_native_password')
         if mydb.is_connected():
             my_cursor_cust_det = mydb.cursor()
-            value = (self.cust_id,)
-            my_cursor_cust_det.execute("select * from customer_det where cust_id = %s", value)
+            value_id = (self.cust_id,self.cust_pwd)
+            #value_pwd = (,)
+            my_cursor_cust_det.execute("select * from customer_det where cust_id = %s and pass_word = %s", value_id)
             rows = my_cursor_cust_det.fetchall()
             if len(rows) == 1:
                 for row in rows:
                     self.cust_fname = row[1]
                     self.cust_lname = row[2]
                     self.cust_email = row[3]
+                 #   self.cust_pwd = row[4]
                     return True
         else:
             print('Error in connecting DB')
+            return False
         my_cursor_cust_det.close()
         mydb.close()
 
