@@ -10,7 +10,6 @@ per_hour_rate decimal(11,2),
 last_upd_by char (8),
 last_upd_tmsp timestamp not null default CURRENT_TIMESTAMP
 );
-
-
-
+insert into employee (emp_id, emp_fname, emp_mname, emp_lname,per_hour_rate,last_upd_by) values
+('empdep01','vignesh','','somu',18,'empdep01');
 select * from employee;
