@@ -20,7 +20,8 @@ alter table employee add column address varchar(100) not null;
 insert into employee (emp_id, emp_fname, emp_mname, emp_lname,per_hour_rate,last_upd_by) values
 ('empdep01','vignesh','','somu',18,'empdep01');
 update employee
-set emp_mname = 'vicky', email_id = 'vicky@mail.com',dob='1996-04-13',highest_edu = 'BTECH',mobile_no = '9873918391',gender='male' 
+set emp_mname = 'vicky', email_id = 'vicky@mail.com',dob='1996-04-13',highest_edu = 'BTECH',mobile_no = '9873918391',gender='male',
+address = 'door no 7, 9th street, delhi'
 where emp_id = 'empdep01';
 show create table employee;
 select * from employee;

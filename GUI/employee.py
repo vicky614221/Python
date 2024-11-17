@@ -1,9 +1,10 @@
 import tkinter as tk
 import tkinter.messagebox
-from gc import enable, disable
+from random import random, randint
 from tkinter import ttk
 from tkinter.ttk import Style
 import mysql.connector
+from datetime import datetime
 
 
 def get_employee_det(emp_id):
@@ -52,6 +53,111 @@ def get_emp_address(emp_id):
     else:
         tkinter.messagebox.showinfo(title='Address',message='Address not found')
 
+def add_employee():
+    window_add_emp = tk.Toplevel(master=window)
+    window_add_emp.title('ADD NEW EMPLOYEE PORTAL')
+    window_add_emp.geometry('400x700+200+20')
+    window_add_emp.columnconfigure((0,1),weight=1)
+    window_add_emp.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
+
+    label_add_emp_fname = ttk.Label(master=window_add_emp,text='Enter first name: ',foreground='blue')
+    entry_add_emp_fname_str = tk.StringVar(value='')
+    entry_add_emp_fname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_fname_str)
+
+    label_add_emp_mname = ttk.Label(master=window_add_emp,text='Enter middle name: ',foreground='blue')
+    entry_add_emp_mname_str = tk.StringVar(value='')
+    entry_add_emp_mname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_mname_str)
+
+    label_add_emp_lname = ttk.Label(master=window_add_emp, text='Enter last name: ', foreground='blue')
+    entry_add_emp_lname_str = tk.StringVar(value='')
+    entry_add_emp_lname = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_lname_str)
+
+    label_add_emp_dob = ttk.Label(master=window_add_emp, text='Date of Birth(YYYY/MM/DD: ', foreground='blue')
+    entry_add_emp_dob_str = tk.StringVar(value='')
+    entry_add_emp_dob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_dob_str)
+
+    label_add_emp_edu = ttk.Label(master=window_add_emp, text='Highest Education: ', foreground='blue')
+    combo_add_emp_edu_str = tk.StringVar(value='')
+    highest_edu = ['BTECH','MTECH','HIGH SCHOOL']
+    combo_add_emp_edu = ttk.Combobox(master=window_add_emp, textvariable=combo_add_emp_edu_str)
+    combo_add_emp_edu.configure(values=highest_edu)
+
+    label_add_emp_mob = ttk.Label(master=window_add_emp, text='Mobile number(10 digits): ', foreground='blue')
+    entry_add_emp_mob_str = tk.StringVar(value='')
+    entry_add_emp_mob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_mob_str)
+
+    label_add_emp_email = ttk.Label(master=window_add_emp, text='Email Address: ', foreground='blue')
+    entry_add_emp_email_str = tk.StringVar(value='')
+    entry_add_emp_email = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_email_str)
+
+    label_add_emp_gen = ttk.Label(master=window_add_emp, text='Gender: ', foreground='blue')
+    gender_list = ['MALE','FEMALE']
+    combo_add_emp_gen_str = tk.StringVar()
+    combo_add_emp_gen = ttk.Combobox(master=window_add_emp,textvariable=combo_add_emp_gen_str)
+    combo_add_emp_gen.configure(values=gender_list)
+
+    label_add_emp_addr = ttk.Label(master=window_add_emp, text='Address(100 chars): ', foreground='blue')
+    entry_add_emp_addr_str = tk.StringVar(value='')
+    entry_add_emp_addr = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_addr_str)
+
+    buttom_add_emp_save = ttk.Button(master=window_add_emp,text='Submit',
+                                     command=lambda : insert_employee(entry_add_emp_fname_str.get(),
+                                                                      entry_add_emp_mname_str.get(),
+                                                                      entry_add_emp_lname_str.get(),
+                                                                      entry_add_emp_dob_str.get(),
+                                                                      combo_add_emp_edu_str.get(),
+                                                                      entry_add_emp_mob_str.get(),
+                                                                      entry_add_emp_email_str.get(),
+                                                                      combo_add_emp_gen_str.get(),
+                                                                      entry_add_emp_addr_str.get()))
+
+    label_add_emp_fname.grid(row=0,column=0,sticky='nsew',padx=10,pady=10)
+    entry_add_emp_fname.grid(row=0,column=1,sticky='ew',padx=10,pady=10)
+
+    label_add_emp_mname.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_mname.grid(row=1, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_lname.grid(row=2, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_lname.grid(row=2, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_dob.grid(row=3, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_dob.grid(row=3, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_edu.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
+    combo_add_emp_edu.grid(row=4, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_mob.grid(row=5, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_mob.grid(row=5, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_email.grid(row=6, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_email.grid(row=6, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_gen.grid(row=7, column=0, sticky='nsew', padx=10, pady=10)
+    combo_add_emp_gen.grid(row=7, column=1, sticky='ew', padx=10, pady=10)
+
+    label_add_emp_addr.grid(row=8, column=0, sticky='nsew', padx=10, pady=10)
+    entry_add_emp_addr.grid(row=8, column=1, sticky='ew', padx=10, pady=10)
+
+    buttom_add_emp_save.grid(row=9, column=1, sticky='nsew', padx=10, pady=10)
+
+def insert_employee(emp_fname,emp_mname,emp_lname,emp_dob,emp_edu,emp_mob,emp_email,emp_gen,emp_addr):
+    try:
+        emp_id = emp_fname[0] + emp_lname[0] + str(randint(1000,9999))
+        curr_tmsp = datetime.now()
+        upd_by = 'Admin'
+        mydb = mysql.connector.connect(host='localhost', user='root', passwd='vicky', database='rbov',
+                                       auth_plugin='mysql_native_password')
+        my_cur = mydb.cursor()
+        my_cur.execute('insert into employee (emp_id, emp_fname, emp_mname, emp_lname,start_date_tmsp,per_hour_rate,'
+                       'email_id,last_upd_by,dob,highest_edu,mobile_no,gender,address) values '
+                       '(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (emp_id,emp_fname,emp_mname,emp_lname,curr_tmsp,18.9,emp_email,
+                                                                  upd_by,emp_dob,emp_edu,emp_mob,emp_gen,emp_addr))
+        mydb.commit()
+        mydb.close()
+        tkinter.messagebox.showinfo(title='SUCCESS',message=f'Employee {emp_id} added successfully')
+    except:
+        tkinter.messagebox.showinfo(title='FATAL ERROR',message='Unable to add details, try again')
+
 window = tk.Tk()
 window.title('Employee portal')
 screen_width = int(window.winfo_screenwidth())
@@ -86,7 +192,7 @@ entry_emp_update = ttk.Entry(master=frame_choice,textvariable=entry_emp_update_s
 button_emp_update = ttk.Button(master = frame_choice,text='Click here')
 
 label_emp_add = ttk.Label(master=frame_choice,text='ADD NEW EMPLOYEE',foreground='green')
-button_emp_add = ttk.Button(master = frame_choice,text='Click here')
+button_emp_add = ttk.Button(master = frame_choice,text='Click here',command=add_employee)
 
 label_emp_del = ttk.Label(master=frame_choice,text='DELETE EMPLOYEE',foreground='red')
 entry_emp_del_str = tk.StringVar(value='Enter employee id')
@@ -143,23 +249,23 @@ label_emp_mob_val = ttk.Label(master=frame_employee_per_det,text='',textvariable
 frame_employee_per_det.columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11),weight=1)
 frame_employee_per_det.rowconfigure(0,weight=1)
 # SECOND FRAME WIDGET POSITION---------------------------------------------------------------------
-label_emp_fname.grid(row=0,column=0,padx=10,pady=10)
-label_emp_fname_val.grid(row=0,column=1,padx=10,pady=10,sticky='w')
+label_emp_fname.grid(row=0,column=0,padx=10,pady=10,sticky='we')
+label_emp_fname_val.grid(row=0,column=1,padx=10,pady=10,sticky='we')
 
-label_emp_mname.grid(row=0,column=2,padx=10,pady=10)
-label_emp_mname_val.grid(row=0,column=3,padx=10,pady=10,sticky='w')
+label_emp_mname.grid(row=0,column=2,padx=10,pady=10,sticky='we')
+label_emp_mname_val.grid(row=0,column=3,padx=10,pady=10,sticky='we')
 
-label_emp_lname.grid(row=0,column=4,padx=10,pady=10)
-label_emp_lname_val.grid(row=0,column=5,padx=10,pady=10,sticky='w')
+label_emp_lname.grid(row=0,column=4,padx=10,pady=10,sticky='we')
+label_emp_lname_val.grid(row=0,column=5,padx=10,pady=10,sticky='we')
 
-label_emp_dob.grid(row=0,column=6,padx=10,pady=10)
-label_emp_dob_val.grid(row=0,column=7,padx=10,pady=10,sticky='w')
+label_emp_dob.grid(row=0,column=6,padx=10,pady=10,sticky='we')
+label_emp_dob_val.grid(row=0,column=7,padx=10,pady=10,sticky='we')
 
-label_emp_edu.grid(row=0,column=8,padx=10,pady=10)
-label_emp_edu_val.grid(row=0,column=9,padx=10,pady=10,sticky='w')
+label_emp_edu.grid(row=0,column=8,padx=10,pady=10,sticky='we')
+label_emp_edu_val.grid(row=0,column=9,padx=10,pady=10,sticky='we')
 
-label_emp_mob.grid(row=0,column=10,padx=10,pady=10)
-label_emp_mob_val.grid(row=0,column=11,padx=10,pady=10,sticky='w')
+label_emp_mob.grid(row=0,column=10,padx=10,pady=10,sticky='we')
+label_emp_mob_val.grid(row=0,column=11,padx=10,pady=10,sticky='we')
 
 frame_employee_per_det.grid(row=1,column=0,sticky='nsew')
 #************
@@ -195,23 +301,23 @@ button_emp_addr = ttk.Button(master=frame_employee_per_det2,text='Click here',st
 frame_employee_per_det2.columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11),weight=1)
 frame_employee_per_det2.rowconfigure((0),weight=1)
 # THIRD FRAME WIDGET POSITION---------------------------------------------------------------------
-label_start_date.grid(row=0,column=0,padx=10,pady=10)
-label_start_date_val.grid(row=0,column=1,padx=10,pady=10,sticky='w')
+label_start_date.grid(row=0,column=0,padx=10,pady=10,sticky='we')
+label_start_date_val.grid(row=0,column=1,padx=10,pady=10,sticky='we')
 
-label_end_date.grid(row=0,column=2,padx=10,pady=10)
-label_end_date_val.grid(row=0,column=3,padx=10,pady=10,sticky='w')
+label_end_date.grid(row=0,column=2,padx=10,pady=10,sticky='we')
+label_end_date_val.grid(row=0,column=3,padx=10,pady=10,sticky='we')
 
-label_per_hr_rate.grid(row=0,column=4,padx=10,pady=10)
-label_per_hr_rate_val.grid(row=0,column=5,padx=10,pady=10,sticky='w')
+label_per_hr_rate.grid(row=0,column=4,padx=10,pady=10,sticky='we')
+label_per_hr_rate_val.grid(row=0,column=5,padx=10,pady=10,sticky='we')
 
-label_emp_email.grid(row=0,column=6,padx=10,pady=10)
-label_emp_email_val.grid(row=0,column=7,padx=10,pady=10,sticky='w')
+label_emp_email.grid(row=0,column=6,padx=10,pady=10,sticky='we')
+label_emp_email_val.grid(row=0,column=7,padx=10,pady=10,sticky='we')
 
-label_emp_gen.grid(row=0,column=8,padx=10,pady=10)
-label_emp_gen_val.grid(row=0,column=9,padx=10,pady=10,sticky='w')
+label_emp_gen.grid(row=0,column=8,padx=10,pady=10,sticky='we')
+label_emp_gen_val.grid(row=0,column=9,padx=10,pady=10,sticky='we')
 
-label_emp_addr.grid(row=0,column=10,padx=10,pady=10)
-button_emp_addr.grid(row=0,column=11,padx=10,pady=10,sticky='w')
+label_emp_addr.grid(row=0,column=10,padx=10,pady=10,sticky='we')
+button_emp_addr.grid(row=0,column=11,padx=10,pady=10,sticky='we')
 
 frame_employee_per_det2.grid(row=2,column=0,sticky='nsew')
 window.mainloop()
