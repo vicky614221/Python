@@ -18,7 +18,7 @@ def get_employee_det(emp_id):
     label_emp_edu_val_str.set('')
     label_emp_mob_val_str.set('')
     label_emp_gen_val_str.set('')
-    button_emp_addr.configure(state='disabled')
+    button_emp_addr.configure(state='Disabled')
     mydb = mysql.connector.connect(host='localhost',user='root',passwd='vicky',database='rbov',auth_plugin='mysql_native_password')
     my_cursor = mydb.cursor()
     my_cursor.execute("select * from employee where emp_id = %s" ,(emp_id,))
