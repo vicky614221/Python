@@ -2,9 +2,9 @@ import tkinter as tk
 import tkinter.messagebox
 from random import random, randint
 from tkinter import ttk
-from tkinter.ttk import Style
 import mysql.connector
 from datetime import datetime
+import  customtkinter as ctk
 
 def get_employee_det(emp_id):
     label_emp_fname_val_str.set('')
@@ -59,47 +59,48 @@ def add_employee():
     window_add_emp.columnconfigure((0,1),weight=1)
     window_add_emp.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
 
-    label_add_emp_fname = ttk.Label(master=window_add_emp,text='Enter first name: ',foreground='blue')
+    label_add_emp_fname = ctk.CTkLabel(master=window_add_emp,text='Enter first name: ')
     entry_add_emp_fname_str = tk.StringVar(value='')
-    entry_add_emp_fname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_fname_str)
+    entry_add_emp_fname = ctk.CTkEntry(master=window_add_emp,text='',textvariable=entry_add_emp_fname_str)
 
-    label_add_emp_mname = ttk.Label(master=window_add_emp,text='Enter middle name: ',foreground='blue')
+    label_add_emp_mname = ctk.CTkLabel(master=window_add_emp,text='Enter middle name: ')
     entry_add_emp_mname_str = tk.StringVar(value='')
-    entry_add_emp_mname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_mname_str)
+    entry_add_emp_mname = ctk.CTkEntry(master=window_add_emp,text='',textvariable=entry_add_emp_mname_str)
 
-    label_add_emp_lname = ttk.Label(master=window_add_emp, text='Enter last name: ', foreground='blue')
+    label_add_emp_lname = ctk.CTkLabel(master=window_add_emp, text='Enter last name: ', foreground='blue')
     entry_add_emp_lname_str = tk.StringVar(value='')
-    entry_add_emp_lname = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_lname_str)
+    entry_add_emp_lname = ctk.CTkEntry(master=window_add_emp, text='', textvariable=entry_add_emp_lname_str)
 
-    label_add_emp_dob = ttk.Label(master=window_add_emp, text='Date of Birth(YYYY/MM/DD: ', foreground='blue')
+    label_add_emp_dob = ctk.CTkLabel(master=window_add_emp, text='Date of Birth(YYYY/MM/DD: ', foreground='blue')
     entry_add_emp_dob_str = tk.StringVar(value='')
-    entry_add_emp_dob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_dob_str)
+    entry_add_emp_dob = ctk.CTkEntry(master=window_add_emp, text='', textvariable=entry_add_emp_dob_str)
 
-    label_add_emp_edu = ttk.Label(master=window_add_emp, text='Highest Education: ', foreground='blue')
+    label_add_emp_edu = ctk.CTkLabel(master=window_add_emp, text='Highest Education: ', foreground='blue')
     combo_add_emp_edu_str = tk.StringVar(value='')
     highest_edu = ['BTECH','MTECH','HIGH SCHOOL']
     combo_add_emp_edu = ttk.Combobox(master=window_add_emp, textvariable=combo_add_emp_edu_str)
     combo_add_emp_edu.configure(values=highest_edu)
+    
 
-    label_add_emp_mob = ttk.Label(master=window_add_emp, text='Mobile number(10 digits): ', foreground='blue')
+    label_add_emp_mob = ctk.CTkLabel(master=window_add_emp, text='Mobile number(10 digits): ', foreground='blue')
     entry_add_emp_mob_str = tk.StringVar(value='')
-    entry_add_emp_mob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_mob_str)
+    entry_add_emp_mob = ctk.CTkEntry(master=window_add_emp, text='', textvariable=entry_add_emp_mob_str)
 
-    label_add_emp_email = ttk.Label(master=window_add_emp, text='Email Address: ', foreground='blue')
+    label_add_emp_email = ctk.CTkLabel(master=window_add_emp, text='Email Address: ', foreground='blue')
     entry_add_emp_email_str = tk.StringVar(value='')
-    entry_add_emp_email = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_email_str)
+    entry_add_emp_email = ctk.CTkEntry(master=window_add_emp, text='', textvariable=entry_add_emp_email_str)
 
-    label_add_emp_gen = ttk.Label(master=window_add_emp, text='Gender: ', foreground='blue')
+    label_add_emp_gen = ctk.CTkLabel(master=window_add_emp, text='Gender: ', foreground='blue')
     gender_list = ['MALE','FEMALE']
     combo_add_emp_gen_str = tk.StringVar()
     combo_add_emp_gen = ttk.Combobox(master=window_add_emp,textvariable=combo_add_emp_gen_str)
     combo_add_emp_gen.configure(values=gender_list)
 
-    label_add_emp_addr = ttk.Label(master=window_add_emp, text='Address(100 chars): ', foreground='blue')
+    label_add_emp_addr = ctk.CTkLabel(master=window_add_emp, text='Address(100 chars): ', foreground='blue')
     entry_add_emp_addr_str = tk.StringVar(value='')
-    entry_add_emp_addr = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_addr_str)
+    entry_add_emp_addr = ctk.CTkEntry(master=window_add_emp, text='', textvariable=entry_add_emp_addr_str)
 
-    buttom_add_emp_save = ttk.Button(master=window_add_emp,text='Submit',
+    buttom_add_emp_save = ctk.CTkButton(master=window_add_emp,text='Submit',
                                      command=lambda : insert_employee(entry_add_emp_fname_str.get(),
                                                                       entry_add_emp_mname_str.get(),
                                                                       entry_add_emp_lname_str.get(),
@@ -167,36 +168,36 @@ window.minsize(width=600,height=700)
 window.bind('<Escape>',lambda event: window.quit())
 window.iconbitmap('window_icon.ico')
 
-style_frame_choice = ttk.Style()
-style_frame_choice.configure("frame_choice.TFrame",foreground="green", relief="raise")
+#style_frame_choice = ctk.CTkStyle()
+#style_frame_choice.configure("frame_choice.TFrame",foreground="green", relief="raise")
 
 # WINDOW GRID CREATION--------------------------------------------------------------------------
 window.columnconfigure(0,weight=1)
 window.rowconfigure((0,1,2),weight=1)
 window.rowconfigure(3,weight=10)
 # WIDGETS FOR TOP FRAME-------------------------------------------------------------------------
-frame_choice = ttk.Frame(master=window,style="frame_choice.TFrame")
+frame_choice = ctk.CTkFrame(master=window)
 # TOP FRAME GRID CREATION-----------------------------------------------------------------------
 frame_choice.columnconfigure((0,1,2,3),weight=1)
 frame_choice.rowconfigure((0,1,2),weight=1)
 
-label_emp_enquiry = ttk.Label(master=frame_choice,text='ENQUIRE EMPLOYEE',foreground='blue')
+label_emp_enquiry = ctk.CTkLabel(master=frame_choice,text='ENQUIRE EMPLOYEE')
 entry_emp_enquiry_str = tk.StringVar(value='Enter employee id')
-entry_emp_enquiry = ttk.Entry(master=frame_choice,textvariable=entry_emp_enquiry_str)
-button_emp_enquiry = ttk.Button(master = frame_choice,text='Click here',command= lambda :get_employee_det(entry_emp_enquiry_str.get()))
+entry_emp_enquiry = ctk.CTkEntry(master=frame_choice,textvariable=entry_emp_enquiry_str)
+button_emp_enquiry = ctk.CTkButton(master = frame_choice,text='Click here',command= lambda :get_employee_det(entry_emp_enquiry_str.get()))
 
-label_emp_update = ttk.Label(master=frame_choice,text='UPDATE EMPLOYEE DETAILS',foreground='orange')
+label_emp_update = ctk.CTkLabel(master=frame_choice,text='UPDATE EMPLOYEE DETAILS')
 entry_emp_update_str = tk.StringVar(value='Enter employee id')
-entry_emp_update = ttk.Entry(master=frame_choice,textvariable=entry_emp_update_str)
-button_emp_update = ttk.Button(master = frame_choice,text='Click here')
+entry_emp_update = ctk.CTkEntry(master=frame_choice,textvariable=entry_emp_update_str)
+button_emp_update = ctk.CTkButton(master = frame_choice,text='Click here')
 
-label_emp_add = ttk.Label(master=frame_choice,text='ADD NEW EMPLOYEE',foreground='green')
-button_emp_add = ttk.Button(master = frame_choice,text='Click here',command=add_employee)
+label_emp_add = ctk.CTkLabel(master=frame_choice,text='ADD NEW EMPLOYEE')
+button_emp_add = ctk.CTkButton(master = frame_choice,text='Click here',command=add_employee)
 
-label_emp_del = ttk.Label(master=frame_choice,text='DELETE EMPLOYEE',foreground='red')
+label_emp_del = ctk.CTkLabel(master=frame_choice,text='DELETE EMPLOYEE')
 entry_emp_del_str = tk.StringVar(value='Enter employee id')
-entry_emp_del = ttk.Entry(master=frame_choice,textvariable=entry_emp_del_str)
-button_emp_del = ttk.Button(master = frame_choice,text='Click here')
+entry_emp_del = ctk.CTkEntry(master=frame_choice,textvariable=entry_emp_del_str)
+button_emp_del = ctk.CTkButton(master = frame_choice,text='Click here')
 # TOP FRAME WIDGET POSITION-----------------------------------------------------------
 label_emp_enquiry.grid(row=0,column=0,padx=20,pady=10)
 entry_emp_enquiry.grid(row=1,column=0,padx=5,pady=5)
@@ -215,34 +216,35 @@ button_emp_del.grid(row=2,column=3,padx=5,pady=5)
 
 frame_choice.grid(row=0,column=0,sticky='ews')
 # WIDGETS FOR SECOND FRAME (Bottom of TOP FRAME) ---------------------------------------
-style_frame_employee_per_det = Style()
-style_frame_employee_per_det.configure("style_frame_employee_per_det.TFrame",foreground="green", relief="sunken")
-frame_employee_per_det = ttk.Frame(master=window,style="style_frame_employee_per_det.TFrame")
+#style_frame_employee_per_det = Style()
+#style_frame_employee_per_det.configure("style_frame_employee_per_det.TFrame",foreground="green", relief="sunken")
+#frame_employee_per_det = ctk.CTkFrame(master=window,style="style_frame_employee_per_det.TFrame")
+frame_employee_per_det = ctk.CTkFrame(master=window)
 
-label_emp_fname = ttk.Label(master=frame_employee_per_det,text='FIRST NAME: ',foreground='blue')
+label_emp_fname = ctk.CTkLabel(master=frame_employee_per_det,text='FIRST NAME: ')
 
 label_emp_fname_val_str = tk.StringVar(value=None)
-label_emp_fname_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_fname_val_str,foreground='green')
+label_emp_fname_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_fname_val_str)
 
-label_emp_mname = ttk.Label(master=frame_employee_per_det,text='MIDDLE NAME: ',foreground='blue')
+label_emp_mname = ctk.CTkLabel(master=frame_employee_per_det,text='MIDDLE NAME: ')
 label_emp_mname_val_str = tk.StringVar(value=None)
-label_emp_mname_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_mname_val_str,foreground='green')
+label_emp_mname_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_mname_val_str)
 
-label_emp_lname = ttk.Label(master=frame_employee_per_det,text='LAST NAME: ',foreground='blue')
+label_emp_lname = ctk.CTkLabel(master=frame_employee_per_det,text='LAST NAME: ')
 label_emp_lname_val_str = tk.StringVar(value=None)
-label_emp_lname_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_lname_val_str,foreground='green')
+label_emp_lname_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_lname_val_str)
 
-label_emp_dob = ttk.Label(master=frame_employee_per_det,text='DATE OF BIRTH: ',foreground='blue')
+label_emp_dob = ctk.CTkLabel(master=frame_employee_per_det,text='DATE OF BIRTH: ')
 label_emp_dob_val_str = tk.StringVar(value=None)
-label_emp_dob_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_dob_val_str,foreground='green')
+label_emp_dob_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_dob_val_str)
 
-label_emp_edu = ttk.Label(master=frame_employee_per_det,text='HIGHEST EDUCATION: ',foreground='blue')
+label_emp_edu = ctk.CTkLabel(master=frame_employee_per_det,text='HIGHEST EDUCATION: ')
 label_emp_edu_val_str = tk.StringVar(value=None)
-label_emp_edu_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_edu_val_str,foreground='green')
+label_emp_edu_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_edu_val_str)
 
-label_emp_mob = ttk.Label(master=frame_employee_per_det,text='MOBILE NUMBER: ',foreground='blue')
+label_emp_mob = ctk.CTkLabel(master=frame_employee_per_det,text='MOBILE NUMBER: ')
 label_emp_mob_val_str = tk.StringVar(value=None)
-label_emp_mob_val = ttk.Label(master=frame_employee_per_det,text='',textvariable=label_emp_mob_val_str,foreground='green')
+label_emp_mob_val = ctk.CTkLabel(master=frame_employee_per_det,text='',textvariable=label_emp_mob_val_str)
 
 # SECOND FRAME GRID CREATION-----------------------------------------------------------------------
 frame_employee_per_det.columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11),weight=1)
@@ -269,32 +271,33 @@ label_emp_mob_val.grid(row=0,column=11,padx=10,pady=10,sticky='we')
 frame_employee_per_det.grid(row=1,column=0,sticky='nsew')
 #************
 # WIDGETS FOR THIRD FRAME (Bottom of SECOND FRAME) ---------------------------------------
-style_frame_employee_per_det2 = Style()
-style_frame_employee_per_det2.configure("style_frame_employee_per_det2.TFrame",foreground="green", relief="sunken")
-frame_employee_per_det2 = ttk.Frame(master=window,style="style_frame_employee_per_det2.TFrame")
+#style_frame_employee_per_det2 = Style()
+#style_frame_employee_per_det2.configure("style_frame_employee_per_det2.TFrame",foreground="green", relief="sunken")
+#frame_employee_per_det2 = ctk.CTkFrame(master=window,style="style_frame_employee_per_det2.TFrame")
+frame_employee_per_det2 = ctk.CTkFrame(master=window)
 
-label_start_date = ttk.Label(master=frame_employee_per_det2,text='START DATE: ',foreground='blue')
+label_start_date = ctk.CTkLabel(master=frame_employee_per_det2,text='START DATE: ')
 label_start_date_val_str = tk.StringVar(value=None)
-label_start_date_val = ttk.Label(master=frame_employee_per_det2,text='',textvariable=label_start_date_val_str,foreground='green')
+label_start_date_val = ctk.CTkLabel(master=frame_employee_per_det2,text='',textvariable=label_start_date_val_str)
 
-label_end_date = ttk.Label(master=frame_employee_per_det2,text='END DATE: ',foreground='blue')
+label_end_date = ctk.CTkLabel(master=frame_employee_per_det2,text='END DATE: ')
 label_end_date_val_str = tk.StringVar(value=None)
-label_end_date_val = ttk.Label(master=frame_employee_per_det2,text='',textvariable=label_end_date_val_str,foreground='green')
+label_end_date_val = ctk.CTkLabel(master=frame_employee_per_det2,text='',textvariable=label_end_date_val_str)
 
-label_per_hr_rate = ttk.Label(master=frame_employee_per_det2,text='BILL RATE/HOUR: ',foreground='blue')
+label_per_hr_rate = ctk.CTkLabel(master=frame_employee_per_det2,text='BILL RATE/HOUR: ')
 label_per_hr_rate_val_str = tk.DoubleVar(value=None)
-label_per_hr_rate_val = ttk.Label(master=frame_employee_per_det2,text='',textvariable=label_per_hr_rate_val_str,foreground='green')
+label_per_hr_rate_val = ctk.CTkLabel(master=frame_employee_per_det2,text='',textvariable=label_per_hr_rate_val_str)
 
-label_emp_email = ttk.Label(master=frame_employee_per_det2,text='EMAIL ID: ',foreground='blue')
+label_emp_email = ctk.CTkLabel(master=frame_employee_per_det2,text='EMAIL ID: ')
 label_emp_email_val_str = tk.DoubleVar(value=None)
-label_emp_email_val = ttk.Label(master=frame_employee_per_det2,text='',textvariable=label_emp_email_val_str,foreground='green')
+label_emp_email_val = ctk.CTkLabel(master=frame_employee_per_det2,text='',textvariable=label_emp_email_val_str)
 
-label_emp_gen = ttk.Label(master=frame_employee_per_det2,text='GENDER: ',foreground='blue')
+label_emp_gen = ctk.CTkLabel(master=frame_employee_per_det2,text='GENDER: ')
 label_emp_gen_val_str = tk.StringVar(value=None)
-label_emp_gen_val = ttk.Label(master=frame_employee_per_det2,text='',textvariable=label_emp_gen_val_str,foreground='green')
+label_emp_gen_val = ctk.CTkLabel(master=frame_employee_per_det2,text='',textvariable=label_emp_gen_val_str)
 
-label_emp_addr = ttk.Label(master=frame_employee_per_det2,text='ADDRESS: ',foreground='blue')
-button_emp_addr = ttk.Button(master=frame_employee_per_det2,text='Click here',state='disabled',
+label_emp_addr = ctk.CTkLabel(master=frame_employee_per_det2,text='ADDRESS: ')
+button_emp_addr = ctk.CTkButton(master=frame_employee_per_det2,text='Click here',state='disabled',
                              command=lambda : get_emp_address(entry_emp_enquiry_str.get()))
 # THIRD FRAME GRID CREATION-----------------------------------------------------------------------
 frame_employee_per_det2.columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11),weight=1)
