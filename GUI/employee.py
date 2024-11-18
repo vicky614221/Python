@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
+from pydoc import parentname
 from random import random, randint
 from tkinter import ttk
 from tkinter.ttk import Style
@@ -53,53 +54,54 @@ def get_emp_address(emp_id):
         tkinter.messagebox.showinfo(title='Address',message='Address not found')
 
 def add_employee():
-    window_add_emp = tk.Toplevel(master=window)
+    window_add_emp = tk.Toplevel()
+    window_add_emp.grab_set()
+    window_add_emp.attributes('-topmost', True)
     window_add_emp.title('ADD NEW EMPLOYEE PORTAL')
     window_add_emp.geometry('400x700+200+20')
     window_add_emp.columnconfigure((0,1),weight=1)
     window_add_emp.rowconfigure((0,1,2,3,4,5,6,7,8,9),weight=1)
 
     label_add_emp_fname = ttk.Label(master=window_add_emp,text='Enter first name: ',foreground='blue')
-    entry_add_emp_fname_str = tk.StringVar(value='')
+    entry_add_emp_fname_str = tk.StringVar(value=None)
     entry_add_emp_fname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_fname_str)
 
     label_add_emp_mname = ttk.Label(master=window_add_emp,text='Enter middle name: ',foreground='blue')
-    entry_add_emp_mname_str = tk.StringVar(value='')
+    entry_add_emp_mname_str = tk.StringVar(value=None)
     entry_add_emp_mname = ttk.Entry(master=window_add_emp,text='',textvariable=entry_add_emp_mname_str)
 
     label_add_emp_lname = ttk.Label(master=window_add_emp, text='Enter last name: ', foreground='blue')
-    entry_add_emp_lname_str = tk.StringVar(value='')
+    entry_add_emp_lname_str = tk.StringVar(value=None)
     entry_add_emp_lname = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_lname_str)
 
     label_add_emp_dob = ttk.Label(master=window_add_emp, text='Date of Birth(YYYY/MM/DD: ', foreground='blue')
-    entry_add_emp_dob_str = tk.StringVar(value='')
+    entry_add_emp_dob_str = tk.StringVar(value=None)
     entry_add_emp_dob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_dob_str)
 
     label_add_emp_edu = ttk.Label(master=window_add_emp, text='Highest Education: ', foreground='blue')
-    combo_add_emp_edu_str = tk.StringVar(value='')
+    combo_add_emp_edu_str = tk.StringVar(value=None)
     highest_edu = ['BTECH','MTECH','HIGH SCHOOL']
     combo_add_emp_edu = ttk.Combobox(master=window_add_emp, textvariable=combo_add_emp_edu_str)
     combo_add_emp_edu.configure(values=highest_edu)
 
     label_add_emp_mob = ttk.Label(master=window_add_emp, text='Mobile number(10 digits): ', foreground='blue')
-    entry_add_emp_mob_str = tk.StringVar(value='')
+    entry_add_emp_mob_str = tk.StringVar(value=None)
     entry_add_emp_mob = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_mob_str)
 
     label_add_emp_email = ttk.Label(master=window_add_emp, text='Email Address: ', foreground='blue')
-    entry_add_emp_email_str = tk.StringVar(value='')
+    entry_add_emp_email_str = tk.StringVar(value=None)
     entry_add_emp_email = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_email_str)
 
     label_add_emp_gen = ttk.Label(master=window_add_emp, text='Gender: ', foreground='blue')
     gender_list = ['MALE','FEMALE']
-    combo_add_emp_gen_str = tk.StringVar()
+    combo_add_emp_gen_str = tk.StringVar(value=None)
     combo_add_emp_gen = ttk.Combobox(master=window_add_emp,textvariable=combo_add_emp_gen_str)
     combo_add_emp_gen.configure(values=gender_list)
 
     label_add_emp_addr = ttk.Label(master=window_add_emp, text='Address(100 chars): ', foreground='blue')
-    entry_add_emp_addr_str = tk.StringVar(value='')
+    entry_add_emp_addr_str = tk.StringVar(value=None)
     entry_add_emp_addr = ttk.Entry(master=window_add_emp, text='', textvariable=entry_add_emp_addr_str)
-
-    buttom_add_emp_save = ttk.Button(master=window_add_emp,text='Submit',
+    button_add_emp_save = ttk.Button(master=window_add_emp,text='Submit',
                                      command=lambda : insert_employee(entry_add_emp_fname_str.get(),
                                                                       entry_add_emp_mname_str.get(),
                                                                       entry_add_emp_lname_str.get(),
@@ -137,25 +139,32 @@ def add_employee():
     label_add_emp_addr.grid(row=8, column=0, sticky='nsew', padx=10, pady=10)
     entry_add_emp_addr.grid(row=8, column=1, sticky='ew', padx=10, pady=10)
 
-    buttom_add_emp_save.grid(row=9, column=1, sticky='nsew', padx=10, pady=10)
+    button_add_emp_save.grid(row=9, column=1, sticky='nsew', padx=10, pady=10)
 
-def insert_employee(emp_fname,emp_mname,emp_lname,emp_dob,emp_edu,emp_mob,emp_email,emp_gen,emp_addr):
-    try:
-        emp_id = emp_fname[0] + emp_lname[0] + str(randint(1000,9999))
-        curr_tmsp = datetime.now()
-        upd_by = 'Admin'
-        mydb = mysql.connector.connect(host='localhost', user='root', passwd='vicky', database='rbov',
-                                       auth_plugin='mysql_native_password')
-        my_cur = mydb.cursor()
-        my_cur.execute('insert into employee (emp_id, emp_fname, emp_mname, emp_lname,start_date_tmsp,per_hour_rate,'
-                       'email_id,last_upd_by,dob,highest_edu,mobile_no,gender,address) values '
-                       '(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (emp_id,emp_fname,emp_mname,emp_lname,curr_tmsp,18.9,emp_email,
-                                                                  upd_by,emp_dob,emp_edu,emp_mob,emp_gen,emp_addr))
-        mydb.commit()
-        mydb.close()
-        tkinter.messagebox.showinfo(title='SUCCESS',message=f'Employee {emp_id} added successfully')
-    except:
-        tkinter.messagebox.showinfo(title='FATAL ERROR',message='Unable to add details, try again')
+    def insert_employee(emp_fname,emp_mname,emp_lname,emp_dob,emp_edu,emp_mob,emp_email,emp_gen,emp_addr):
+
+        if (len(emp_fname) > 0 and len(emp_mname) > 0 and len(emp_lname) > 0 and len(emp_dob) > 0 and len(emp_edu) > 0
+            and len(emp_mob) > 0 and len(emp_email) > 0 and len(emp_gen) > 0 and len(emp_addr) > 0):
+            try:
+                emp_id = emp_fname[0] + emp_lname[0] + str(randint(1000,9999))
+                curr_tmsp = datetime.now()
+                upd_by = 'Admin'
+                mydb = mysql.connector.connect(host='localhost', user='root', passwd='vicky', database='rbov',
+                                               auth_plugin='mysql_native_password')
+                my_cur = mydb.cursor()
+                my_cur.execute('insert into employee (emp_id, emp_fname, emp_mname, emp_lname,start_date_tmsp,per_hour_rate,'
+                               'email_id,last_upd_by,dob,highest_edu,mobile_no,gender,address) values '
+                               '(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', (emp_id,emp_fname,emp_mname,emp_lname,curr_tmsp,18.9,emp_email,
+                                                                          upd_by,emp_dob,emp_edu,emp_mob,emp_gen,emp_addr))
+                mydb.commit()
+                mydb.close()
+                tkinter.messagebox.showinfo(title='SUCCESS',message=f'Employee {emp_id} added successfully')
+            except:
+                tkinter.messagebox.showinfo(title='FATAL ERROR',message='Unable to add details, try again')
+        else:
+            window_add_emp.attributes('-topmost', False)
+            tkinter.messagebox.showinfo(title='Error', message='Please fill all values before submitting')
+            window_add_emp.attributes('-topmost', True)
 
 window = tk.Tk()
 window.title('Employee portal')
