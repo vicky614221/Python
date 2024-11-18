@@ -159,12 +159,23 @@ def add_employee():
                 mydb.commit()
                 mydb.close()
                 tkinter.messagebox.showinfo(title='SUCCESS',message=f'Employee {emp_id} added successfully')
+                entry_add_emp_fname_str.set('')
+                entry_add_emp_mname_str.set('')
+                entry_add_emp_lname_str.set('')
+                entry_add_emp_email_str.set('')
+                entry_add_emp_dob_str.set('')
+                combo_add_emp_edu_str.set('')
+                entry_add_emp_mob_str.set('')
+                combo_add_emp_gen_str.set('')
+                entry_add_emp_addr_str.set('')
+
             except:
                 tkinter.messagebox.showinfo(title='FATAL ERROR',message='Unable to add details, try again')
         else:
             window_add_emp.attributes('-topmost', False)
             tkinter.messagebox.showinfo(title='Error', message='Please fill all values before submitting')
             window_add_emp.attributes('-topmost', True)
+
 
 window = tk.Tk()
 window.title('Employee portal')
