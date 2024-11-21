@@ -3,7 +3,6 @@
 # 2. Staff portal
 # 3. Admin portal
 import tkinter.messagebox
-
 import mysql.connector
 import os
 

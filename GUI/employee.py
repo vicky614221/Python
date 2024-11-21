@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
-from random import random, randint
+from random import randint
 from tkinter import ttk
 from tkinter.ttk import Style
 import mysql.connector
