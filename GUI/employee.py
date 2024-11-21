@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.messagebox
-from pydoc import parentname
 from random import random, randint
 from tkinter import ttk
 from tkinter.ttk import Style
