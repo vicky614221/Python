@@ -47,6 +47,7 @@ def open_specific_portal(user):
         #rbutton_select_str = tk.StringVar()
         rbutton_select2 = ttk.Radiobutton(master=specific_portal_frame,text='Existing user?',variable=rbutton_select_str,value='existing',command=exist_patient_selected)
         rbutton_select2.grid(row=1,column=2)
+        global entry_id_str
         entry_id_str = tk.StringVar(value='Enter patient ID')
         global entry_id
         entry_id = tk.Entry(master=specific_portal_frame,textvariable=entry_id_str,state='disabled')
@@ -71,6 +72,7 @@ def exist_patient_selected():
 def new_patient_selected():
     pass
 def show_patient_det():
-    PortalUser(user='P', id=entry_id.get(), name=None, age=None, gender=None).get_portal_user_info(user='P',user_id=entry_pwd.get())
+    print(entry_id_str.get())
+    PortalUser(user='P', id=entry_id_str.get(), name=None, dob=None, gender=None,email=None,phone_no=None,address=None).get_portal_user_info(user='P',user_id=entry_id.get())
 
 window.mainloop()
