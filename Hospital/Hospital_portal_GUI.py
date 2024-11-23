@@ -28,6 +28,7 @@ button_admin_portal.grid(row=1,column=2,rowspan=3,sticky='nsew',pady=50,padx=10)
 window_frame.grid(row=0,column=0,sticky='nsew',padx=5,pady=5)
 
 def open_specific_portal(user):
+    global specific_portal
     specific_portal = tk.Toplevel()
     specific_portal.grab_set()
     specific_portal.minsize(width=300, height=300)
@@ -52,12 +53,13 @@ def open_specific_portal(user):
         global entry_id
         entry_id = tk.Entry(master=specific_portal_frame,textvariable=entry_id_str,state='disabled')
         entry_id.grid(row=2,column=0,columnspan=3,sticky='ew')
+        global entry_pwd_str
         entry_pwd_str = tk.StringVar(value='Enter your password')
         global entry_pwd
         entry_pwd = tk.Entry(master=specific_portal_frame,textvariable=entry_pwd_str,show='*',state='disabled')
         entry_pwd.grid(row=3,column=0,columnspan=3,sticky='ew')
         global button_submit
-        button_submit = ttk.Button(master=specific_portal_frame,text='SUBMIT',state='disabled',command=show_patient_det)
+        button_submit = ttk.Button(master=specific_portal_frame,text='SUBMIT',state='disabled',command=lambda :validate_and_show(user))
         button_submit.grid(row=4,column=0,columnspan=3,)
     elif user == 'D':
         pass
@@ -70,9 +72,90 @@ def exist_patient_selected():
         entry_pwd.configure(state='normal')
         button_submit.configure(state='enabled')
 def new_patient_selected():
-    pass
+    if rbutton_select_str.get() == 'new':
+        entry_id.configure(state='disabled')
+        entry_pwd.configure(state='disabled')
+        button_submit.configure(state='disabled')
+        global window_np
+        window_np = tk.Toplevel(master=specific_portal)
+        window_np.grab_set()
+        window_np.minsize(width=300,height=300)
+        window_np.title('New Patient Registration')
+        window_np.rowconfigure((0,1,2,3,4,5,6,7),weight=1)
+        window_np.columnconfigure((0,1),weight=1)
+        label_p_name = ttk.Label(master=window_np,text='Patient Full Name: ')
+        label_p_name.grid(row=0,column=0,sticky='ew',padx=5)
+        global entry_p_name_str
+        entry_p_name_str = tk.StringVar()
+        entry_p_name = ttk.Entry(master=window_np,textvariable=entry_p_name_str)
+        entry_p_name.grid(row=0,column=1,sticky='ew',padx=5)
+
+        label_p_dob = ttk.Label(master=window_np, text='Patient D.O.B(YYYY/MM/DD): ')
+        label_p_dob.grid(row=1, column=0,sticky='ew',padx=5)
+        global entry_p_dob_str
+        entry_p_dob_str = tk.StringVar()
+        entry_p_dob = ttk.Entry(master=window_np, textvariable=entry_p_dob_str)
+        entry_p_dob.grid(row=1, column=1,sticky='ew',padx=5)
+
+        label_p_gen = ttk.Label(master=window_np, text='Patient Gender: ')
+        label_p_gen.grid(row=2, column=0,sticky='ew',padx=5)
+        global combo_p_gen_str
+        combo_p_gen_str = tk.StringVar()
+        gen_list = ['MALE','FEMALE']
+        combo_p_gen = ttk.Combobox(master=window_np, textvariable=combo_p_gen_str)
+        combo_p_gen.configure(values=gen_list)
+        combo_p_gen.grid(row=2, column=1,sticky='ew',padx=5)
+
+        label_p_email = ttk.Label(master=window_np, text='Patient Email ID: ')
+        label_p_email.grid(row=3, column=0, sticky='ew', padx=5)
+        global entry_p_email_str
+        entry_p_email_str = tk.StringVar()
+        entry_p_email = ttk.Entry(master=window_np, textvariable=entry_p_email_str)
+        entry_p_email.grid(row=3, column=1, sticky='ew', padx=5)
+
+        label_p_phone = ttk.Label(master=window_np, text='Patient Phone No.: ')
+        label_p_phone.grid(row=4, column=0, sticky='ew', padx=5)
+        global entry_p_phone_str
+        entry_p_phone_str = tk.StringVar()
+        entry_p_phone = ttk.Entry(master=window_np, textvariable=entry_p_phone_str)
+        entry_p_phone.grid(row=4, column=1, sticky='ew', padx=5)
+
+        label_p_adhar = ttk.Label(master=window_np, text='Patient Aadhar No.: ')
+        label_p_adhar.grid(row=5, column=0, sticky='ew', padx=5)
+        global entry_p_adhar_str
+        entry_p_adhar_str = tk.StringVar()
+        entry_p_adhar = ttk.Entry(master=window_np, textvariable=entry_p_adhar_str)
+        entry_p_adhar.grid(row=5, column=1, sticky='ew', padx=5)
+
+        label_p_addr = ttk.Label(master=window_np, text='Patient Address: ')
+        label_p_addr.grid(row=6, column=0, sticky='ew', padx=5)
+        global entry_p_addr_str
+        entry_p_addr_str = tk.StringVar()
+        entry_p_addr = ttk.Entry(master=window_np, textvariable=entry_p_addr_str)
+        entry_p_addr.grid(row=6, column=1, sticky='ew', padx=5)
+
+        button_submit_patient = ttk.Button(master=window_np,
+                                           text='SUBMIT',
+                                           command=add_patient)
+        button_submit_patient.grid(row=7,column=0,columnspan=2)
+
+def add_patient():
+    if PortalUser(user=None, id=None, name=None, dob=None,
+               gender=None, email=None, phone_no=None, aadhar=None, address=None).add_portal_user(user='P', patient_name=entry_p_name_str.get(),
+                     patient_dob=entry_p_dob_str.get(),
+                     patient_gen=combo_p_gen_str.get(),
+                     patient_email=entry_p_email_str.get(),
+                     patient_phone=entry_p_phone_str.get(),
+                     patient_adhar=entry_p_adhar_str.get(),
+                     patient_addr=entry_p_addr_str.get()):
+        window_np.destroy()
 def show_patient_det():
     print(entry_id_str.get())
     PortalUser(user='P', id=entry_id_str.get(), name=None, dob=None, gender=None,email=None,phone_no=None,address=None).get_portal_user_info(user='P',user_id=entry_id.get())
+
+def validate_and_show(user):
+    if user == 'P':
+        PortalUser(user='P', id=entry_id_str.get(),name=None, dob=None, gender=None,email=None,phone_no=None,aadhar=None,address=None).is_valid_user('P',entry_id_str.get(),entry_pwd_str.get())
+
 
 window.mainloop()
