@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox
 from tkinter import ttk, PhotoImage
 from hospital import *
 
@@ -155,7 +156,28 @@ def show_patient_det():
 
 def validate_and_show(user):
     if user == 'P':
-        PortalUser(user='P', id=entry_id_str.get(),name=None, dob=None, gender=None,email=None,phone_no=None,aadhar=None,address=None).is_valid_user('P',entry_id_str.get(),entry_pwd_str.get())
+        patient_obj = PortalUser(user='P', id=entry_id_str.get(),name=None, dob=None, gender=None,email=None,phone_no=None,aadhar=None,address=None)
+        patient_obj.is_valid_user('P',entry_id_str.get(),entry_pwd_str.get())
+        patient_id,patient_name,patient_dob,patient_gen,patient_email,patient_phone,patient_aadhar,patient_addr = patient_obj.get_portal_user_info()
+        #add logic to get appointment details
+
+        window_show_p = tk.Toplevel()
+        window_show_p.title('Patient Options')
+        window_show_p.minsize(width=300,height=300)
+        window_show_p.grab_set()
+        window_show_p.rowconfigure((0,1,2,3),weight=1)
+        window_show_p.columnconfigure((0,1),weight=1)
+        label_p_heading = ttk.Label(master=window_show_p,text=('Hello '+ patient_name.upper()),font=('Times New Roman', 15, 'bold'),foreground='blue')
+        label_p_heading.grid(row=0,column=0,columnspan=2,padx=10,pady=10)
+        button_book_apt = ttk.Button(master=window_show_p,text='Book an appointment')
+        button_book_apt.grid(row=1,column=0,columnspan=2,sticky='nsew',padx=10,pady=10)
+        button_check_apt = ttk.Button(master=window_show_p, text='Check next appointment')
+        button_check_apt.grid(row=2, column=0, columnspan=2,sticky='nsew',padx=10,pady=10)
+        button_edit_per = ttk.Button(master=window_show_p, text='Edit personal details',command=edit_personal_det)
+        button_edit_per.grid(row=3, column=0, columnspan=2,sticky='nsew',padx=10,pady=10)
+
+def edit_personal_det():
+    tkinter.messagebox.showinfo(title='ACCESS DENIED',message='Please reach out to hospital admin team to edit details')
 
 
 window.mainloop()
