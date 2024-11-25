@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
+from doctest import master
 from tkinter import ttk, PhotoImage
 from hospital import *
 
@@ -188,37 +189,33 @@ def validate_and_show(user):
     if user == 'P':
         patient_obj = PortalUser(user='P', id=entry_id_str.get(),name=None, dob=None, gender=None,email=None,phone_no=None,aadhar=None,address=None)
         if patient_obj.is_valid_user('P',entry_id_str.get(),entry_pwd_str.get()):
-            patient_id,patient_name,patient_dob,patient_gen,patient_email,patient_phone,patient_aadhar,patient_addr = patient_obj.get_portal_user_info()
+            global patient_and_apmt_det
+            patient_and_apmt_det = patient_obj.get_portal_user_info()
+            patient_name = patient_and_apmt_det[0][1]
             #add logic to get appointment details
             window_portal_select_frame.grid_forget()
-            #window_show_p = tk.Toplevel()
-            #window_show_p.title('Patient Options')
-            #window_show_p.minsize(width=300,height=300)
-            #window_show_p.grab_set()
-            #window_show_p.rowconfigure((0,1,2,3),weight=1)
-            #window_show_p.columnconfigure((0,1),weight=1)
             window_patient_login_frame.grid_forget()
-            global frame_show_p
-            frame_show_p = ttk.Frame(master=window_frame)
-            frame_show_p.columnconfigure((0,1),weight=1)
-            frame_show_p.rowconfigure((0, 1, 2, 3, 4), weight=1)
-            label_p_heading = ttk.Label(master=frame_show_p,text=('Hello '+ patient_name.upper()),font=('Times New Roman', 15, 'bold'),foreground='blue')
+            global window_show_p_frame
+            window_show_p_frame = ttk.Frame(master=window_frame)
+            window_show_p_frame.columnconfigure((0,1),weight=1)
+            window_show_p_frame.rowconfigure((0, 1, 2, 3, 4), weight=1)
+            label_p_heading = ttk.Label(master=window_show_p_frame,text=('Hello '+ patient_name.upper()),font=('Times New Roman', 15, 'bold'),foreground='blue')
             label_p_heading.grid(row=0,column=0,columnspan=2,padx=10,pady=10)
-            button_book_apt = ttk.Button(master=frame_show_p,text='Book an appointment')
+            button_book_apt = ttk.Button(master=window_show_p_frame,text='Book an appointment')
             button_book_apt.grid(row=1,column=0,columnspan=2,sticky='nsew',padx=10,pady=10)
-            button_check_apt = ttk.Button(master=frame_show_p, text='Check next appointment')
+            button_check_apt = ttk.Button(master=window_show_p_frame, text='Check next appointment',command=check_appointment)
             button_check_apt.grid(row=2, column=0, columnspan=2,sticky='nsew',padx=10,pady=10)
-            button_edit_per = ttk.Button(master=frame_show_p, text='Edit personal details',command=edit_personal_det)
+            button_edit_per = ttk.Button(master=window_show_p_frame, text='Edit personal details',command=edit_personal_det)
             button_edit_per.grid(row=3, column=0, columnspan=2,sticky='nsew',padx=10,pady=10)
-            button_back_patient_portal = ttk.Button(master=frame_show_p,text='Go back',command=go_back_to_patient_p_login_portal)
+            button_back_patient_portal = ttk.Button(master=window_show_p_frame,text='Go back',command=go_back_to_patient_p_login_portal)
             button_back_patient_portal.grid(row=4,column=1)
-            frame_show_p.grid(row=0,column=0)
+            window_show_p_frame.grid(row=0,column=0)
 
 def edit_personal_det():
     tkinter.messagebox.showinfo(title='ACCESS DENIED',message='Please reach out to hospital admin team to edit details')
 
 def go_back_to_patient_p_login_portal():
-    frame_show_p.grid_forget()
+    window_show_p_frame.grid_forget()
     entry_id_str.set('Enter your ID')
     entry_pwd_str.set('Enter your password')
     window_patient_login_frame.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
@@ -226,5 +223,57 @@ def go_back_to_patient_p_login_portal():
 def go_back_to_portal_select():
     window_patient_login_frame.grid_forget()
     window_portal_select_frame.grid(row=0,column=0,sticky='nsew')
+
+button_next_click_count = 0
+def check_appointment():
+    if len(patient_and_apmt_det)  > 0:
+        window_show_p_frame.grid_forget()
+        global frame_appointment_det
+        frame_appointment_det = {}
+        label_apmt_id = {}
+        label_apmt_id_val_str = {}
+        label_apmt_id_val = {}
+        button_next = {}
+        button_prev = {}
+        button_back = {}
+
+        number_of_apmt_frames = len(patient_and_apmt_det)
+        for i in range(number_of_apmt_frames):
+            frame_appointment_det[i] = tk.Frame(master=window_frame)
+            frame_appointment_det[i].rowconfigure((0,1,2),weight=1)
+            frame_appointment_det[i].columnconfigure((0,1),weight=1)
+            label_apmt_id[i] = ttk.Label(master=frame_appointment_det[i],text='Appointment ID')
+            label_apmt_id[i].grid(row=0,column=0)
+            label_apmt_id_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][8])
+            label_apmt_id_val[i] = tk.Label(master=frame_appointment_det[i],textvariable=label_apmt_id_val_str[i])
+            #label_apmt_id_val[i].configure(text=patient_and_apmt_det[i][8])
+            label_apmt_id_val[i].grid(row=0,column=1)
+            button_next[i] = ttk.Button(master=frame_appointment_det[i],text='Next',command= next_button_pressed)
+            button_prev[i] = ttk.Button(master=frame_appointment_det[i],text='Prev',command= prev_button_pressed)
+            button_back[i] = ttk.Button(master=frame_appointment_det[i],text='Back',command=go_back_patient_show)
+            button_next[i].grid(row=1,column=0)
+            button_prev[i].grid(row=1,column=1)
+            button_back[i].grid(row=2,column=0,columnspan=2)
+        global button_next_click_count
+        if button_next_click_count == 0:
+            frame_appointment_det[0].grid(row=0,column=0)
+
+def next_button_pressed():
+    global button_next_click_count
+    button_next_click_count = button_next_click_count + 1
+    print(button_next_click_count)
+    if button_next_click_count <= (len(patient_and_apmt_det)-1):
+        frame_appointment_det[button_next_click_count].grid(row=0,column=0)
+
+def prev_button_pressed():
+    pass
+
+def go_back_patient_show():
+    global button_next_click_count
+    button_next_click_count = 0
+    for i in range(len(patient_and_apmt_det)):
+        frame_appointment_det[i].grid_forget()
+    window_show_p_frame.grid(row=0, column=0)
+
 
 window.mainloop()

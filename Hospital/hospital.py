@@ -40,9 +40,7 @@ class PortalUser(Hospital):
                 password_db = (row[0][0]).encode('utf-8')
                 if bcrypt.checkpw(password_bytes,password_db):
                     my_curr.execute('select * from patient where patient_id = %s', (user_id,))
-                    patient_det = my_curr.fetchall()
-                    if len(patient_det) ==1:
-                        return  True
+                    return  True
                 else:
                     tkinter.messagebox.showinfo(title='Error',message='Incorrect password')
             else:
@@ -54,21 +52,14 @@ class PortalUser(Hospital):
         mydb = mysql.connector.connect(host='localhost',user=os.environ.get('MYSQL_USER'),passwd=os.environ.get('MYSQL_PWD'),database='rbov',auth_plugin='mysql_native_password')
         my_curr = mydb.cursor()
         if self.user == 'P':
-            my_curr.execute('select * from patient where patient_id = %s', (self.user_id,))
+            #my_curr.execute('select * from patient where patient_id = %s', (self.user_id,))
+            my_curr.execute('select p.patient_id,patient_name,patient_dob,patient_gender,patient_email,patient_phone_no,aadhar_no,patient_address,appointment_id,appointment_date,appointment_time,appointment_doctor_id,appointment_doctor_name from patient p inner join appointment a on p.patient_id = a.patient_id where a.patient_id = %s',(self.user_id,))
             row = my_curr.fetchall()
-            if len(row)==1:
-                patient_id = row[0][0]
-                patient_name = row[0][2]
-                patient_dob = row[0][3]
-                patient_gen = row[0][4]
-                patient_email = row[0][5]
-                patient_phone = row[0][6]
-                patient_aadhar = row[0][7]
-                patient_addr = row[0][8]
-                return patient_id,patient_name,patient_dob,patient_gen,patient_email,patient_phone,patient_aadhar,patient_addr
+            if len(row)>1:
+                return row
 
         #else:
-         #   tkinter.messagebox.showinfo(title='Database error',message='failed connecting to Database')
+            #tkinter.messagebox.showinfo(title='Database error',message='failed connecting to Database')
     def update_portal_user_info(self,user,**data):
         # update query to update portal user details
         if user == 'P':
