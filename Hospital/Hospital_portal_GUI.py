@@ -188,11 +188,9 @@ def show_patient_det():
 def validate_and_show(user):
     if user == 'P':
         patient_obj = PortalUser(user='P', id=entry_id_str.get(),name=None, dob=None, gender=None,email=None,phone_no=None,aadhar=None,address=None)
-        if patient_obj.is_valid_user('P',entry_id_str.get(),entry_pwd_str.get()):
-            global patient_and_apmt_det
-            patient_and_apmt_det = patient_obj.get_portal_user_info()
-            patient_name = patient_and_apmt_det[0][1]
-            #add logic to get appointment details
+        (is_valid,patient_basic_det) = patient_obj.is_valid_user('P',entry_id_str.get(),entry_pwd_str.get())
+        if is_valid:
+            patient_name = patient_basic_det[0][2]
             window_portal_select_frame.grid_forget()
             window_patient_login_frame.grid_forget()
             global window_show_p_frame
@@ -226,6 +224,11 @@ def go_back_to_portal_select():
 
 button_next_click_count = 0
 def check_appointment():
+    patient_obj = PortalUser(user='P', id=entry_id_str.get(), name=None, dob=None, gender=None, email=None,
+                             phone_no=None, aadhar=None, address=None)
+    global patient_and_apmt_det
+    patient_and_apmt_det = []
+    patient_and_apmt_det = patient_obj.get_portal_user_info()
     if len(patient_and_apmt_det)  > 0:
         window_show_p_frame.grid_forget()
         global frame_appointment_det
@@ -233,6 +236,18 @@ def check_appointment():
         label_apmt_id = {}
         label_apmt_id_val_str = {}
         label_apmt_id_val = {}
+        label_patient_id = {}
+        label_patient_id_val_str = {}
+        label_patient_id_val = {}
+        label_doctor_name = {}
+        label_doctor_name_val_str = {}
+        label_doctor_name_val = {}
+        label_apmt_date = {}
+        label_apmt_date_val_str = {}
+        label_apmt_date_val = {}
+        label_apmt_time = {}
+        label_apmt_time_val_str = {}
+        label_apmt_time_val ={}
         button_next = {}
         button_prev = {}
         button_back = {}
@@ -240,33 +255,75 @@ def check_appointment():
         number_of_apmt_frames = len(patient_and_apmt_det)
         for i in range(number_of_apmt_frames):
             frame_appointment_det[i] = tk.Frame(master=window_frame)
-            frame_appointment_det[i].rowconfigure((0,1,2),weight=1)
+            frame_appointment_det[i].rowconfigure((0,1,2,3,4,5,6),weight=1)
             frame_appointment_det[i].columnconfigure((0,1),weight=1)
-            label_apmt_id[i] = ttk.Label(master=frame_appointment_det[i],text='Appointment ID')
-            label_apmt_id[i].grid(row=0,column=0)
-            label_apmt_id_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][8])
-            label_apmt_id_val[i] = tk.Label(master=frame_appointment_det[i],textvariable=label_apmt_id_val_str[i])
-            #label_apmt_id_val[i].configure(text=patient_and_apmt_det[i][8])
-            label_apmt_id_val[i].grid(row=0,column=1)
+
+            #label_apmt_id[i] = ttk.Label(master=frame_appointment_det[i],text='Appointment ID: ')
+            #label_apmt_id[i].grid(row=0,column=0,sticky='nsew')
+
+            #label_apmt_id_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][8])
+            #label_apmt_id_val[i] = tk.Label(master=frame_appointment_det[i],textvariable=label_apmt_id_val_str[i])
+            #label_apmt_id_val[i].grid(row=0,column=1)
+
+            label_patient_id[i] = ttk.Label(master=frame_appointment_det[i], text='Patient ID: ')
+            label_patient_id[i].grid(row=1, column=0)
+
+            label_patient_id_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][0])
+            label_patient_id_val[i] = tk.Label(master=frame_appointment_det[i], textvariable=label_patient_id_val_str[i])
+            label_patient_id_val[i].grid(row=1, column=1)
+
+            label_doctor_name[i] = ttk.Label(master=frame_appointment_det[i], text='Doctor Name: ')
+            label_doctor_name[i].grid(row=2, column=0)
+
+            label_doctor_name_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][12])
+            label_doctor_name_val[i] = tk.Label(master=frame_appointment_det[i], textvariable=label_doctor_name_val_str[i])
+            label_doctor_name_val[i].grid(row=2, column=1)
+
+            label_apmt_date[i] = ttk.Label(master=frame_appointment_det[i], text='Appointment Date: ')
+            label_apmt_date[i].grid(row=3, column=0)
+
+            label_apmt_date_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][9])
+            label_apmt_date_val[i] = tk.Label(master=frame_appointment_det[i],
+                                                textvariable=label_apmt_date_val_str[i])
+            label_apmt_date_val[i].grid(row=3, column=1)
+
+            label_apmt_time[i] = ttk.Label(master=frame_appointment_det[i], text='Appointment Time: ')
+            label_apmt_time[i].grid(row=4, column=0)
+
+            label_apmt_time_val_str[i] = tk.StringVar(value=patient_and_apmt_det[i][10])
+            label_apmt_time_val[i] = tk.Label(master=frame_appointment_det[i],
+                                              textvariable=label_apmt_time_val_str[i])
+            label_apmt_time_val[i].grid(row=4, column=1)
+
             button_next[i] = ttk.Button(master=frame_appointment_det[i],text='Next',command= next_button_pressed)
             button_prev[i] = ttk.Button(master=frame_appointment_det[i],text='Prev',command= prev_button_pressed)
             button_back[i] = ttk.Button(master=frame_appointment_det[i],text='Back',command=go_back_patient_show)
-            button_next[i].grid(row=1,column=0)
-            button_prev[i].grid(row=1,column=1)
-            button_back[i].grid(row=2,column=0,columnspan=2)
+            button_next[i].grid(row=5,column=0)
+            button_prev[i].grid(row=5,column=1)
+            button_back[i].grid(row=6,column=0,columnspan=2)
         global button_next_click_count
         if button_next_click_count == 0:
-            frame_appointment_det[0].grid(row=0,column=0)
+            frame_appointment_det[0].grid(row=0,column=0,sticky='nsew')
+    else:
+        tk.messagebox.showinfo(title='No appointments',message='You have no future appointments, Book an appointment to see details')
 
 def next_button_pressed():
     global button_next_click_count
-    button_next_click_count = button_next_click_count + 1
-    print(button_next_click_count)
-    if button_next_click_count <= (len(patient_and_apmt_det)-1):
-        frame_appointment_det[button_next_click_count].grid(row=0,column=0)
+    if button_next_click_count < (len(patient_and_apmt_det)-1):
+        frame_appointment_det[button_next_click_count].grid_forget()
+        button_next_click_count = button_next_click_count + 1
+        frame_appointment_det[button_next_click_count].grid(row=0,column=0,sticky='nsew')
+    else:
+        tk.messagebox.showinfo(title='Last page',message='This is the last page')
 
 def prev_button_pressed():
-    pass
+    global button_next_click_count
+    if button_next_click_count > 0:
+        frame_appointment_det[button_next_click_count].grid_forget()
+        button_next_click_count = button_next_click_count - 1
+        frame_appointment_det[button_next_click_count].grid(row=0,column=0,sticky='nsew')
+    else:
+        tk.messagebox.showinfo(title='First page',message='This is the first page')
 
 def go_back_patient_show():
     global button_next_click_count

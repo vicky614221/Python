@@ -40,7 +40,8 @@ class PortalUser(Hospital):
                 password_db = (row[0][0]).encode('utf-8')
                 if bcrypt.checkpw(password_bytes,password_db):
                     my_curr.execute('select * from patient where patient_id = %s', (user_id,))
-                    return  True
+                    patient_basic_det = my_curr.fetchall()
+                    return  True,patient_basic_det
                 else:
                     tkinter.messagebox.showinfo(title='Error',message='Incorrect password')
             else:
@@ -55,8 +56,10 @@ class PortalUser(Hospital):
             #my_curr.execute('select * from patient where patient_id = %s', (self.user_id,))
             my_curr.execute('select p.patient_id,patient_name,patient_dob,patient_gender,patient_email,patient_phone_no,aadhar_no,patient_address,appointment_id,appointment_date,appointment_time,appointment_doctor_id,appointment_doctor_name from patient p inner join appointment a on p.patient_id = a.patient_id where a.patient_id = %s',(self.user_id,))
             row = my_curr.fetchall()
-            if len(row)>1:
-                return row
+            return row
+            #else:
+            #    row = my_curr.execute('select * from patient where patient_id = %s', (self.user_id,))
+            #    return row
 
         #else:
             #tkinter.messagebox.showinfo(title='Database error',message='failed connecting to Database')
