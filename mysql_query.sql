@@ -29,3 +29,9 @@ alter table customer_acct add constraint fk_cust_id foreign key(cust_id) referen
 alter table customer_det add pass_word char(8) not null;
 alter table customer_det drop password;
 
+create table test(
+user_id char(8) primary key,
+password char(60) not null
+);
+select * from test;	
+
